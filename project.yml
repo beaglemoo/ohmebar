@@ -1,0 +1,74 @@
+name: OhmeBar
+options:
+  minimumXcodeGenVersion: "2.35"
+  deploymentTarget:
+    macOS: "13.0"
+  defaultConfig: Debug
+  xcodeVersion: "15.0"
+
+settings:
+  base:
+    PRODUCT_NAME: OhmeBar
+    PRODUCT_BUNDLE_IDENTIFIER: com.cb.ohmebar
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
+    ENABLE_HARDENED_RUNTIME: YES
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_IDENTITY: "-"
+
+targets:
+  OhmeBar:
+    type: application
+    platform: macOS
+    deploymentTarget: "13.0"
+
+    sources:
+      - path: OhmeBar
+        excludes:
+          - "**/*.md"
+      - path: Assets/AppIcon.icns
+        buildPhase: resources
+
+    info:
+      path: OhmeBar/Info.plist
+      properties:
+        LSUIElement: true
+        NSPrincipalClass: NSApplication
+        LSMinimumSystemVersion: "$(MACOSX_DEPLOYMENT_TARGET)"
+        CFBundleShortVersionString: "1.0.0"
+        CFBundleVersion: "1"
+        CFBundleIconFile: AppIcon
+
+    entitlements:
+      path: OhmeBar/OhmeBar.entitlements
+      properties:
+        com.apple.security.network.client: true
+
+    settings:
+      base:
+        INFOPLIST_FILE: OhmeBar/Info.plist
+        CODE_SIGN_ENTITLEMENTS: OhmeBar/OhmeBar.entitlements
+        LD_RUNPATH_SEARCH_PATHS: "@executable_path/../Frameworks"
+        SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+      configs:
+        Release:
+          SWIFT_OPTIMIZATION_LEVEL: "-O"
+
+    dependencies:
+      - sdk: Network.framework
+      - sdk: Security.framework
+      - sdk: ServiceManagement.framework
+
+  OhmeBarTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "13.0"
+    sources:
+      - path: OhmeBarTests
+    dependencies:
+      - target: OhmeBar
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_MODULE_NAME: OhmeBarTests

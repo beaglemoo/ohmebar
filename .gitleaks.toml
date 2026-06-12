@@ -1,0 +1,6 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ohme's public Firebase web client API key - not a secret, ships in Ohme's own apps and in ohmepy"
+regexes = ['''AIzaSyC8ZeZngm33tpOXLpbXeKfwtyZ1WrkbdBY''']
